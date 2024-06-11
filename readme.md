@@ -3,7 +3,7 @@
 * Name: CM Email Registration Blacklist and Whitelist
 * Contributors: CreativeMindsSolutions
 * Minimum WordPress version: 5.4.0
-* Tested up to WordPress version: 6.4
+* Tested up to WordPress version: 6.5.4
 
 ## Introduction
 
