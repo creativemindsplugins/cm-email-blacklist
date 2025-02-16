@@ -1,0 +1,91 @@
+<?php
+ob_start();
+include_once CMEB_PATH . '/lib/models/IpWhitelist.php';
+if ( !empty( $_POST ) && isset( $_POST[ 'cmeb_ip_white' ] ) || isset( $_GET[ 'cmeb_ip_white' ] ) ) {
+	try {
+		CMEB_IpWhitelist::_processAdminRequest();
+	} catch ( Exception $e ) {
+		$message = $e->getMessage();
+	}
+}
+$ips = CMEB_IpWhitelist::getIpsWhitelist();
+?>
+<script>
+function editIpWhite( id ) {
+	var row = jQuery( '#ip-row-' + id );
+	var ipContainer = row.find( '.ipText' );
+	if ( ipContainer.find( 'input' ).length > 0 )
+		return false;
+	var input = jQuery( '<input />' ).attr( 'type', 'text' ).attr( 'name', 'ip_white[]' ).css( 'text-transform', 'lowercase' );
+	var input2 = jQuery( '<input />' ).attr( 'type', 'hidden' ).attr( 'name', 'white_id[]' ).attr( 'value', id );
+	var inputValue = ipContainer.text();
+	var submit = jQuery( '<button />' ).attr( 'type', 'submit' ).attr( 'value', 'edit' ).attr( 'name', 'cmeb_ip_white' ).attr( 'class', 'button_' ).append( 'Apply' );
+	ipContainer.empty().append( input.val( inputValue ) ).append( input2.val( id ) ).append( submit );
+}
+function deleteIpWhite( id ) {
+	var nonce = jQuery('#cmeb_ip_whitelist_form_nonce').val();
+	var ipContainer = jQuery( '#ip-row-' + id + ' .ipText' );
+	var ipName = '';
+	if ( ipContainer.find( 'input' ).length > 0 )
+		ipName = ipContainer.find( 'input[name=email]' ).val();
+	else
+		ipName = ipContainer.text();
+	if ( confirm( 'Are you sure you want to delete ip: ' + ipName + '?' ) ) {
+		window.location.href = "?page=cmeb_menu&cmeb_ip_white=delete&white_id=" + id + "&nonce=" + nonce + "#tab-ip-whitelist";
+	}
+}
+</script>
+<div class="clear">
+	<?php
+	/*
+	?>
+	<button type='submit' class="button button-primary widget-control-save right" name="cmeb_ip_white" value='clear' onclick="return confirm('Are you sure you want to delete all entries from this section?');">Clear all</button>
+	<?php
+	*/
+	?>
+	<h3>IP Whitelist</h3>
+</div>
+<?php if ( !empty( $message ) ) : ?>
+	<div class="updated below-h2" style="display:none;">
+		<p><?php echo $message; ?></p>
+	</div>
+<?php endif; ?>
+<p>You should use full specific IP address <em>(e.g. "127.0.0.1")</em> or wildcards <em>(e.g. "127.0.0.*")</em>.</p>
+<strong>Add IP address:</strong>
+<input type="text" name="ip_white" placeholder="0.0.0.0 or 0.0.0.*" style="width:250px;text-transform:lowercase;" />
+<?php wp_nonce_field( 'cmeb_ip_whitelist_form_nonce', 'cmeb_ip_whitelist_form_nonce' ); ?>
+<button type="submit" name="cmeb_ip_white" value="add" class="button_">Add</button>
+<br />
+<br />
+<table class="wp-list-table widefat">
+	<thead>
+		<tr valign="top">
+			<th scope="col"style="text-align: left; padding-left: 10px;">IP address</th>
+			<th scope="col"style="text-align: left; padding-left: 10px;">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php if ( !empty( $ips ) ) : ?>
+		<?php foreach ( $ips as $ip ) : ?>
+				<tr id="ip-row-<?php echo $ip->id; ?>">
+					<td>
+						<span class="ipText"><?php echo $ip->ip; ?></span>
+					</td>
+					<td>
+						<a href="javascript:void(0)" onclick="editIpWhite(<?php echo $ip->id; ?>)">[Edit]</a>
+						<a href="javascript:void(0)" onclick="deleteIpWhite(<?php echo $ip->id; ?>)">[Delete]</a>
+					</td>
+				</tr>
+		<?php endforeach; ?>
+		<?php else: ?>
+			<tr>
+				<td colspan="2">
+					<p>There are no whitelisted IP.</p>
+				</td>
+			</tr>
+		<?php endif; ?>
+	</tbody>
+</table>
+<?php
+ob_end_flush();
+?>
