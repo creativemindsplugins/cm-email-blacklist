@@ -3,7 +3,7 @@
 * Name: CM Email Registration Blacklist and Whitelist
 * Contributors: CreativeMindsSolutions
 * Minimum WordPress version: 5.4.0
-* Tested up to WordPress version: 6.6
+* Tested up to WordPress version: 6.7.2
 
 ## Introduction
 
@@ -48,8 +48,9 @@ Introducing our innovative blacklist plugin, crafted to elevate your WordPress s
 * Complimentary Domain Catalog from SpamAssassin
 * Domain Whitelist Plugin Capability
 * Email Blacklist Plugin Functionality
+* Includes an IP whitelist feature
 * Administrative Control over Front-End Interface Customization
-* Built-In Domain Testing Feature
+* Built-In Email/Domain/IP Testing Feature
 
 </details>
 
@@ -62,12 +63,15 @@ Introducing our innovative blacklist plugin, crafted to elevate your WordPress s
 * DNSBL Online Service Compatibility
 * Domain Blacklist and Whitelist Functionality
 * Email Blacklist and Whitelist Options
+* IP Blacklist and Whitelist features
 * Failed Registration Log Access
 * Customizable Error Messages for Registration Attempts
+* Define profile restrictions.
 * Capability to Import Email Lists via CSV
-* Domain & Email Verification Tool Included
+* Domain, Email & IP Verification Tool Included
 * Enhanced Gmail Compatibility
 * Manage Commenting Permissions
+* Includes support of special characters
 * Integration with Contact Form 7
 
 </details>
